@@ -5,6 +5,7 @@ import { NoteCard } from './components/note-card'
 
 interface Note{
   id:string
+  title:string
   date:Date
   content:string
 }
@@ -24,9 +25,10 @@ export function App() {
 
   })
 
-  function onNoteCreated(content : string){
+  function onNoteCreated(content : string, title: string){
     const NewNote = {
         id : crypto.randomUUID(),
+        title,
         date: new Date(),
         content,
     }
@@ -59,6 +61,8 @@ export function App() {
   
   const filteredNotes = search != ''
   ? notes.filter(note => note.content.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+  ? notes.filter(note => note.title.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+  : notes
   : notes
 
   return (

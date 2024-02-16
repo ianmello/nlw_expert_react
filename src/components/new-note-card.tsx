@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 
 
 interface NewNoteCardProps{
-  onNoteCreated: (content: string) => void
+  onNoteCreated: (content: string, title:string) => void
 }
 
 let speechRecognition: SpeechRecognition | null = null
@@ -14,6 +14,7 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
   const [shouldShowOnboarding, setShouldShowOnboarding] = useState(true)
   const[isRecording, setIsRecording] = useState(false)
   const[content, setContent] = useState('')
+  const[title, setTitle] = useState('')
 
 
   function handleStartEditor(){
@@ -28,6 +29,15 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
     }
   }
 
+  function handleTitleChanged(event: ChangeEvent<HTMLTextAreaElement>){
+    setTitle(event.target.value)
+
+    if (event.target.value === ""){
+      setShouldShowOnboarding(true)
+    }
+    
+  }
+
   function handleSaveNote(event: FormEvent){
       event.preventDefault()
 
@@ -35,9 +45,10 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
         return
       }
 
-      onNoteCreated(content)
+      onNoteCreated(content, title)
 
       setContent('')
+      setTitle('')
       setShouldShowOnboarding(true)
 
       toast.success("Nota criada com sucesso")
@@ -112,14 +123,18 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
 
             <form className="flex-1 flex flex-col">
               <div className="flex flex-1 flex-col gap-3 p-5">
-                <span className='text-sm font-medium text-slate-300'>
-                  Adicionar nota
-                </span>
+                <textarea 
+                  className="bg-slate-600 p-2 flex align-top mt-5 size-21 rounded-md text-md text-slate-400 outline-none resize-none" 
+                  placeholder="Título da nota" 
+                  onChange={handleTitleChanged}
+                  value = {title}/>
+
                 { shouldShowOnboarding ? (
                   <p className='text-sm leading-6 text-slate-400'>
-                  Comece <button type='button' onClick={handleStartRecording} className="font-medium text-lime-400  hover:underline">gravando uma nota</button> em áudio ou se preferir <button type='button'onClick={handleStartEditor}className="font-medium text-lime-400 hover:underline">utilize apenas texto</button>.
-                </p>
+                    Comece <button type='button' onClick={handleStartRecording} className="font-medium text-lime-400  hover:underline">gravando uma nota</button> em áudio ou se preferir <button type='button'onClick={handleStartEditor}className="font-medium text-lime-400 hover:underline">utilize apenas texto</button>.
+                  </p>
                 ) : (
+                  
                   <textarea 
                   autoFocus 
                   className="text-sm leading-6 text-slate-400 bg-transparent resize-none flex-1 outline-none"
@@ -127,6 +142,7 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
                   value = {content}
                   />
                   ) }
+
               </div>
 
               {isRecording ?(
