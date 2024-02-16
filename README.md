@@ -1,1 +1,1 @@
-Para rodar esse projeto, deve-se fazer o download da pasta, descompactá-la, abrir essa pasta no Visual Code, abrir um novo terminal e escrever o comando 'npm run dev'. Isso criará uma porta host, só copiá-la e colocar no seu navegador
+Para rodar esse projeto, deve-se fazer o download da pasta, descompactá-la, abrir essa pasta no Visual Code, abrir um novo terminal e escrever o comando 'npm install', após baixar as dependências, execute 'npm run dev'. Isso criará uma porta host, só copiá-la e colocar no seu navegador
